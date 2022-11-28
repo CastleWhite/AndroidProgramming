@@ -27,4 +27,8 @@
         </activity>
     </application>
 
+    <queries>
+        <provider android:authorities="com.example.databasetest.provider" />
+    </queries>
+
 </manifest>
