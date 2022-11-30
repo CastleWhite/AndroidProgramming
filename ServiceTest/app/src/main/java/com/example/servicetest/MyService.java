@@ -1,7 +1,11 @@
 package com.example.servicetest;
 
+import static android.app.Notification.VISIBILITY_SECRET;
+
 import android.Manifest;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
@@ -39,9 +43,15 @@ public class MyService extends Service {
         super.onCreate();
         Log.d("MyService", "onCreate");
 
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        NotificationChannel channel = new NotificationChannel("10", "my_channel", NotificationManager.IMPORTANCE_DEFAULT);
+        channel.setShowBadge(true);
+        channel.setLockscreenVisibility(VISIBILITY_SECRET);
+        manager.createNotificationChannel(channel);
+
         Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_MUTABLE);
-        Notification notification = new NotificationCompat.Builder(this)
+        PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        Notification notification = new NotificationCompat.Builder(this, "10")
                 .setContentTitle("title")
                 .setContentText("text")
                 .setWhen(System.currentTimeMillis())
